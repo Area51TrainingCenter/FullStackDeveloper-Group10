@@ -1,0 +1,1 @@
+mongodb://user_area51:<PASSWORD>@clusterarea51-shard-00-00-hjeyc.mongodb.net:27017,clusterarea51-shard-00-01-hjeyc.mongodb.net:27017,clusterarea51-shard-00-02-hjeyc.mongodb.net:27017/test?ssl=true&replicaSet=ClusterArea51-shard-0&authSource=admin&retryWrites=true
