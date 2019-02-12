@@ -6,4 +6,13 @@ export class UsuarioController extends BaseController {
   constructor(){
     super(Usuario)
   }
+
+  /* async listar(req: Request, res: Response, next: NextFunction) {
+    const list = await Usuario.find().populate("rol")
+
+    res.json({
+      status: 200,
+      results: list
+    })
+  } */
 }

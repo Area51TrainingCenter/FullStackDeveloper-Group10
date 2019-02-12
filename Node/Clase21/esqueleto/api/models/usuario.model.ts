@@ -23,9 +23,18 @@ const esquema = new mongoose.Schema({
 
   rol: {
     type: mongoose.Schema.ObjectId,
+    ref: "Rol",
     required: true
   }
 })
+
+const autoPoblar = function(next) {
+  this.populate("rol")
+  next()
+}
+
+esquema.pre("find", autoPoblar)
+esquema.pre("findOne", autoPoblar)
 
 const Usuario = mongoose.model("Usuario", esquema)
 

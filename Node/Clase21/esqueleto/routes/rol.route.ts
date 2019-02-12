@@ -7,10 +7,10 @@ const Router = express.Router()
 
 const controlador = new RolController()
 
-Router.get("/", controlador.listar)
-Router.get("/:id", controlador.detallar)
+Router.get("/", handlerErrors.cacheo(controlador.listar))
+Router.get("/:id", handlerErrors.cacheo(controlador.detallar))
 Router.post("/", handlerErrors.cacheo(controlador.insertar))
-Router.put("/:id", controlador.modificar)
-Router.delete("/:id", controlador.eliminar)
+Router.put("/:id", handlerErrors.cacheo(controlador.modificar))
+Router.delete("/:id", handlerErrors.cacheo(controlador.eliminar))
 
 export {Router}
