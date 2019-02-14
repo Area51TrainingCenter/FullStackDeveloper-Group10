@@ -37,4 +37,23 @@ export class UsuarioController extends BaseController {
               message: "User not found"
             })
   }
+
+  async newAccessToken(req: Request, res: Response, next: NextFunction) {
+    const refreshToken = req.body.refreshToken
+
+    const usuario = await Usuario.findOne({refreshToken})
+
+    if(usuario) {
+      const accessToken = createAccessToken(usuario._id, usuario.nombre, usuario.rol.nombre)
+
+      res.json({accessToken})
+    } else {
+      res
+        .status(404)
+        .json({
+          status: 404,
+          message: "User not logged"
+        })
+    }
+  }
 }
