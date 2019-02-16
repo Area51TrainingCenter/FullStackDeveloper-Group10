@@ -2,7 +2,7 @@ import jwt = require("jwt-simple")
 import moment = require("moment")
 import randToken = require("rand-token")
 
-const palabraSecreta = "elPerúiráAUnMundialAlgúnDia..SegúnLosMásPesimistas"
+const palabraSecreta = process.env.KEYWORD_SECRET
 
 const createAccessToken = (_id: string, nombre: string, rol: string): string => {
     const payload = {

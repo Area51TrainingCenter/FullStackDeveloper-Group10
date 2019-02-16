@@ -19,13 +19,24 @@ const handlerErrors = {
   }
 },
 general(error: IError, req: Request, res: Response, next: NextFunction) {
-  res
-    .status(error.status)
-    .json({
+  let respuesta
+
+  if(process.env.ENVIROMENT=="development") {
+    respuesta = {
       status: error.status,
       message: error.message,
       stack: error.stack
-    })
+    }
+  } else {
+    respuesta = {
+      status: error.status,
+      message: error.message
+    }
+  }
+
+  res
+    .status(error.status)
+    .json(respuesta)
 }
 }
 
