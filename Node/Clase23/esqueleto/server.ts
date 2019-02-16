@@ -8,8 +8,9 @@ import { handlerErrors } from "./handlers/errores.handler";
 import mongoose = require("mongoose")
 import bodyParser = require("body-parser")
 import dotenv = require("dotenv")
+import cors = require("cors")
 
-dotenv.config({path: "./variables.env"})
+//dotenv.config({path: "./variables.env"})
 
 // Conexión a Mongo
 mongoose.Promise = global.Promise
@@ -27,6 +28,9 @@ const port = process.env.PORT || 4000
 
 // Archivos estáticos
 //app.use(express.static("./public"))
+
+app.use(cors())
+
 
 // Middlewares
 app.use(bodyParser.urlencoded({extended: true}))
