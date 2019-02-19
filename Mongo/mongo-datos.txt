@@ -174,3 +174,14 @@ db.alumnos.aggregate([
         }
     }
 ]).pretty()
+
+Para importar
+mongoimport -d prueba -c personas personas.json --jsonArray
+
+Para crear indices
+db.personas.createIndex({
+    "dob.age": 1
+})
+
+Para listar indices
+db.personas.getIndexes()
