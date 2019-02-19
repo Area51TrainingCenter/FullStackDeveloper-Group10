@@ -1,0 +1,176 @@
+Para levantar el demonio
+mongod
+
+Para levantar el cli
+mongo o ./mongo
+
+Para listar las bases de datos
+show databases
+
+Para acceder a una bd
+use <<nombre bd>>
+
+Para crear un usuario admin
+use admin
+db.createUser(
+    {
+        user: "admin",
+        pwd: "abc123456",
+        roles: [
+            {role: "userAdminAnyDatabase", db: "admin"}
+        ]
+    }
+)
+
+Para listar usuarios
+db.getUsers()
+
+Para salir de mongo
+exit
+
+Para loguearse
+mongo
+use admin
+db.auth("admin","abc123456")
+
+Para crear un usuario en la bd prueba
+use prueba
+db.createUser(
+    {
+        user: "usuario-prueba",
+        pwd: "abc123456",
+        roles: [
+            {role: "readWrite", db: "prueba"}
+        ]
+    }
+)
+
+Para insertar
+db.libros.insertOne(...)
+db.libros.insertMany(...)
+
+Para listar
+db.libros.find()
+db.libros.find().pretty()
+db.libros.find().toArray()
+db.libros.findOne()
+db.libros.find(<<criterio de búsqueda>>)
+db.libros.find().count()
+
+Para actualizar
+db.libros.update(..., ...) NO USAR
+db.libros.updateOne(..., { $set: {...} })
+db.libros.updateMany(..., { $set: {...} })
+
+Para eliminar
+db.libros.deleteOne(...)
+db.libros.deleteMany(...)
+
+db.cursos.insertMany([
+    {curso: "Angular", duracion: 1, temas: 20},
+    {curso: "NodeJS", duracion:3, temas: 60},
+    {curso: "MongoDB", duracion:6, temas: 120}
+])
+
+		ObjectId("5c6b63ca2f9cc4f0181d24f3"),
+		ObjectId("5c6b63ca2f9cc4f0181d24f4"),
+		ObjectId("5c6b63ca2f9cc4f0181d24f5")
+
+db.alumnos.insertMany([
+    {nombre: "Pedro", apellido: "Salinas", edad: 23, curso: ObjectId("5c6b63ca2f9cc4f0181d24f3")},
+    {nombre: "Elena", apellido: "Quispe", edad: 25, curso: ObjectId("5c6b63ca2f9cc4f0181d24f3")},
+    {nombre: "Ariana", apellido: "Quintanilla", edad: 34, curso: ObjectId("5c6b63ca2f9cc4f0181d24f3")},
+    {nombre: "Josefina", apellido: "Bellido", edad: 45, curso: ObjectId("5c6b63ca2f9cc4f0181d24f4")},
+    {nombre: "Pedro", apellido: "Chavarry", edad: 62, curso: ObjectId("5c6b63ca2f9cc4f0181d24f5")},
+    {nombre: "Andrea", apellido: "Cabanillas", edad: 31, curso: ObjectId("5c6b63ca2f9cc4f0181d24f5")}
+])
+
+db.alumnos.aggregate([
+    {
+        $match: {
+            edad: {$ne: 25}
+        }
+    },
+    {
+        $lookup: {
+            from: "cursos",
+            localField: "curso",
+            foreignField: "_id",
+            as: "curso"
+        }
+    },
+    {
+        $project: {
+            _id: 0,
+            nombre: 1, edad: 1,
+            "curso.curso": 1, "curso.temas": 1
+            }
+    }
+]).pretty()
+
+db.alumnos.aggregate([
+    {
+        $match: {
+            $and: [
+                {edad: {$gte: 30}},
+                {edad: {$lte: 40}}
+            ]
+        }
+    },
+    {
+        $lookup: {
+            from: "cursos",
+            localField: "curso",
+            foreignField: "_id",
+            as: "curso"
+        }
+    },
+    {
+        $project: {
+            _id: 0,
+            nombre: 1, edad: 1,
+            "curso.curso": 1, "curso.temas": 1
+            }
+    }
+]).pretty()
+
+db.alumnos.aggregate([
+    {
+        $skip: 2
+    },
+    {
+        $limit: 2
+    },
+    {
+        $lookup: {
+            from: "cursos",
+            localField: "curso",
+            foreignField: "_id",
+            as: "curso"
+        }
+    },
+    {
+        $project: {
+            _id: 0,
+            nombre: 1, edad: 1,
+            "curso.curso": 1, "curso.temas": 1
+            }
+    }
+]).pretty()
+
+db.alumnos.aggregate([
+    {
+        $lookup: {
+            from: "cursos",
+            localField: "curso",
+            foreignField: "_id",
+            as: "curso"
+        }
+    },
+    {
+        $group: {
+            _id: { edad: "$edad"},
+            cuenta: {$sum: 1}
+        }
+    }
+]).pretty()
